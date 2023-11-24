@@ -25,8 +25,8 @@ public class Movimiento : MonoBehaviour
 
     // Power ups
     public GameObject inmortal;
-    public GameObject proyectil;
-    public int proyectiles = 0;
+    // public GameObject proyectil;
+    // public int proyectiles = 0;
 
     void Start()
     {
@@ -52,11 +52,6 @@ public class Movimiento : MonoBehaviour
         if (Input.GetButtonDown("Jump") && !jumping)
         {
             rb2d.AddForce(new Vector2(0, upForce));
-        }
-        if (Input.GetKey("r") && proyectiles > 0)
-        {
-            GameObject p = Instantiate(proyectil, transform.position, Quaternion.identity);
-            p.GetComponent<Proyectil>().direccion = derecha;
         }
     }
 
@@ -89,9 +84,30 @@ public class Movimiento : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Suelo")
+        switch (collision.gameObject.tag)
         {
-            jumping = false;
+            case "Suelo":
+                jumping = false;
+                break;
+
+            case "Enemigo":
+                if (!inmortal.activeSelf)
+                {
+                    // if (jumping)
+                    // {
+                    //     rb2d.AddForce(new Vector2(0, 800.0f));
+                    // }
+                    // else
+                    // {
+                    //     rb2d.AddForce(new Vector2(0, 400.0f));
+                    // }
+                    rb2d.velocity = new Vector2(0, 8.0f);
+                    ReducirVida(10.0f);
+                }
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -110,21 +126,21 @@ public class Movimiento : MonoBehaviour
             case "Picos":
                 if (!inmortal.activeSelf)
                 {
-                    if (jumping)
-                    {
-                        rb2d.AddForce(new Vector2(-0, 2*upForce));
-                    }
-                    else
-                    {
-                        rb2d.AddForce(new Vector2(-0, upForce));
-                    }
+                    Vector2 aux = rb2d.velocity;
+                    rb2d.velocity = new Vector2(0, 8.0f);
                     ReducirVida(10.0f);
                 }
                 break;
 
+            case "Enemigo":
+                rb2d.velocity = new Vector2(0, 8.0f);
+                Destroy(other.gameObject);
+                break;
+
             case "Velocidad":
                 Destroy(other.gameObject);
-                velMove = 4.0f * velMove;
+                velMove += 150.0f;
+                upForce += 150.0f;
                 Invoke("DesactivarPowerVelocidad", 10f);
                 break;
 
@@ -134,10 +150,10 @@ public class Movimiento : MonoBehaviour
                 Invoke("DesactivarPowerInmortal", 10f);
                 break;
             
-            case "Destruccion":
-                Destroy(other.gameObject);
-                proyectiles += 1;
-                break;
+            // case "Destruccion":
+            //     Destroy(other.gameObject);
+            //     proyectiles += 1;
+            //     break;
 
             default:
                 break;
@@ -146,11 +162,14 @@ public class Movimiento : MonoBehaviour
 
     public void ReducirVida(float cantidad)
     {
-        vidaActual -= cantidad;
-        barraVida.fillAmount = vidaActual / vidaMaxima;
-        if (vidaActual == 0)
+        if (!inmortal.activeSelf)
         {
-            Morir();
+            vidaActual -= cantidad;
+            barraVida.fillAmount = vidaActual / vidaMaxima;
+            if (vidaActual == 0)
+            {
+                Morir();
+            }
         }
     }
 
@@ -158,8 +177,9 @@ public class Movimiento : MonoBehaviour
     {
         this.GetComponent<SpriteRenderer>().enabled = false;
         this.GetComponent<Movimiento>().enabled = false;
-        rb2d.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+        this.GetComponent<BoxCollider2D>().enabled = false;
         this.GetComponent<Animator>().enabled = false;
+        rb2d.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
         loseScreen.SetActive(true);
     }
 
@@ -173,6 +193,7 @@ public class Movimiento : MonoBehaviour
 
     private void DesactivarPowerVelocidad()
     {
-        velMove = velMove / 4.0f;
+        velMove -= 150.0f;
+        upForce -= 150.0f;
     }
 }

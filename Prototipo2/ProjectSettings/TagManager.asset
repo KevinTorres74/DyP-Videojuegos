@@ -10,6 +10,10 @@ TagManager:
   - Velocidad
   - Destruccion
   - Proyectil
+  - Enemigo
+  - LadronLimite
+  - Movil
+  - Bloque
   layers:
   - Default
   - TransparentFX

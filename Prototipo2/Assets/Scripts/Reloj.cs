@@ -5,10 +5,7 @@ using TMPro;
 
 public class Reloj : MonoBehaviour
 {
-    // [Tooltip("Tiempo inicial en segundos")]
     public int tiempoInicial;
-
-    // [Tooltip("Escala del tiempo del Reloj")]
     [Range(-10.0f, 10.0f)]
     public float escalaDeTiempo = 1;
 
@@ -16,10 +13,10 @@ public class Reloj : MonoBehaviour
     private float tiempoDelFrameConTimeScale = 0f;
     private float tiempoAMostrarEnSegundos = 0f;
     private float escalaDeTiempoAlPausar, escalaDeTiempoInicial;
-    // private bool estaPausado = false;
     public GameObject jugador;
-    // public GameObject camara;
     public GameObject loseScreen;
+
+    public bool finNivel = false;
 
     void Start()
     {
@@ -32,17 +29,19 @@ public class Reloj : MonoBehaviour
 
     void Update()
     {
-        tiempoDelFrameConTimeScale = Time.deltaTime * escalaDeTiempo;
-        tiempoAMostrarEnSegundos += tiempoDelFrameConTimeScale;
-        // SpriteRenderer sp = jugador.GetComponent<SpriteRenderer>();
-        if (jugador != null)
+        if (!finNivel)
         {
-            SpriteRenderer sp = jugador.GetComponent<SpriteRenderer>();
-            if (sp != null)
+            tiempoDelFrameConTimeScale = Time.deltaTime * escalaDeTiempo;
+            tiempoAMostrarEnSegundos += tiempoDelFrameConTimeScale;
+            if (jugador != null)
             {
-                if (sp.enabled)
+                SpriteRenderer sp = jugador.GetComponent<SpriteRenderer>();
+                if (sp != null)
                 {
-                    ActualizarReloj(tiempoAMostrarEnSegundos);
+                    if (sp.enabled)
+                    {
+                        ActualizarReloj(tiempoAMostrarEnSegundos);
+                    }
                 }
             }
         }
@@ -77,9 +76,12 @@ public class Reloj : MonoBehaviour
                     a.enabled = false;
                 }
             }
-            // jugador.GetComponent<BoxCollider2D>().enabled = false;
-            // camara.SetActive(true);
             loseScreen.SetActive(true);
         }
-    }    
+    }
+
+    public string GetTiempo()
+    {
+        return texto.text;
+    }
 }

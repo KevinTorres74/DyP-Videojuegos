@@ -7,7 +7,6 @@ public class PlataformaMovil : MonoBehaviour
     public GameObject objetoMover;
     public Transform pInicio;
     public Transform pFinal;
-    // public Transform auxJugador;
     public float velocidad;
     private Vector3 moverHacia;
 
@@ -29,12 +28,19 @@ public class PlataformaMovil : MonoBehaviour
         }
     }
 
-    private void OnCollisionStay2D (Collision2D collision)
+    private void OnCollisionEnter2D (Collision2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            // auxJugador = collision.transform.parent;
-            collision.transform.parent = transform;
+            if (gameObject.tag == "Suelo")
+            {
+                collision.transform.parent = transform;
+            }
+            else if (gameObject.tag == "Bloque")
+            {
+                Movimiento m = collision.gameObject.GetComponent<Movimiento>();
+                m.Morir();
+            }
         }
     }
 
@@ -42,7 +48,7 @@ public class PlataformaMovil : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            if (collision.transform.parent != null)
+            if (collision.transform.parent != null && gameObject.tag == "Suelo")
             {
                 collision.transform.parent = null;
             }
