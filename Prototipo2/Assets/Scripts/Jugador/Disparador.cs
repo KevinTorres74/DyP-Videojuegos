@@ -9,8 +9,8 @@ public class Disparador : MonoBehaviour
     public Transform origen;
     public Transform disparos;
     public Proyectil prefabProyectil;
-    public float tiempoDisparo;
-    public float tiempoSigDisparo = 0f;
+    // public float tiempoDisparo;
+    // public float tiempoSigDisparo = 0f;
     private ObjectPool<Proyectil> proyectilesPool;
     public int proyectiles;
     public TMP_Text cantidadP;
