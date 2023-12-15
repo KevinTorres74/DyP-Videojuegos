@@ -25,7 +25,7 @@ public class ProyectilEnemigo : MonoBehaviour
         {
             // desactivarP(this);
             // Destroy(collision.gameObject);
-            collision.gameObject.GetComponent<Movimiento>().ReducirVida(20.0f);
+            collision.gameObject.GetComponent<Movimiento>().ReducirVida(10.0f);
             desactivarP(this);
         }
     }

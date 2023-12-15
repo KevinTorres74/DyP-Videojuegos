@@ -507,6 +507,7 @@ MonoBehaviour:
   - {fileID: 1558036434}
   - {fileID: 849904035}
   i: 0
+  escena: 0
 --- !u!1 &1276887731
 GameObject:
   m_ObjectHideFlags: 0
@@ -1079,7 +1080,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Preciona "Espacio"
+  m_text: Presiona "Espacio"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

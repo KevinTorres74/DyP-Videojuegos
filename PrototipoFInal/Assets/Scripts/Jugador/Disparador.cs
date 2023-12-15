@@ -15,6 +15,8 @@ public class Disparador : MonoBehaviour
     public int proyectiles;
     public TMP_Text cantidadP;
 
+    public AudioSource audio;
+
     void Start()
     {
         cantidadP.text = "0";
@@ -55,6 +57,7 @@ public class Disparador : MonoBehaviour
 
     void Disparar()
     {
+        audio.Play();
         proyectilesPool.Get();
     }
 

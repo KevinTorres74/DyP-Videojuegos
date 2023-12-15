@@ -16,6 +16,9 @@ public class DisparadorEnemigo : MonoBehaviour
     private bool puedeDisparar = true;
     public float visDist = 10.0f;
 
+    public AudioSource audio;
+
+
     void Start()
     {
         proyectilesPool = new ObjectPool<ProyectilEnemigo>(() => {
@@ -56,6 +59,7 @@ public class DisparadorEnemigo : MonoBehaviour
 
     void Disparar()
     {
+        audio.Play();
         proyectilesPool.Get();
     }
 

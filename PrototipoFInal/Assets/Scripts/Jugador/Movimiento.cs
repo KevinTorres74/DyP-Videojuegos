@@ -16,6 +16,7 @@ public class Movimiento : MonoBehaviour
     Vector3 velocidad = Vector3.zero;
     bool derecha = true;
     public Animator anim;
+    public AudioSource musicaNivel;
 
     // Vida
     public GameObject loseScreen;
@@ -30,6 +31,7 @@ public class Movimiento : MonoBehaviour
 
     void Start()
     {
+        musicaNivel.Play();
         anim = this.GetComponent<Animator>();
         rb2d = this.GetComponent<Rigidbody2D>();
     }
@@ -166,7 +168,7 @@ public class Movimiento : MonoBehaviour
         {
             vidaActual -= cantidad;
             barraVida.fillAmount = vidaActual / vidaMaxima;
-            if (vidaActual == 0)
+            if (vidaActual <= 0)
             {
                 Morir();
             }
@@ -175,6 +177,10 @@ public class Movimiento : MonoBehaviour
 
     public void Morir()
     {
+        if (musicaNivel != null && musicaNivel.isPlaying)
+        {
+            musicaNivel.Stop();
+        }
         this.GetComponent<SpriteRenderer>().enabled = false;
         this.GetComponent<Movimiento>().enabled = false;
         this.GetComponent<BoxCollider2D>().enabled = false;
